@@ -40,7 +40,7 @@ python manage.py migrate
 ```
 6. Загрузите данные из фикстур:
 ```bash
-python manage.py loaddata fixtures/data.json
+python manage.py loaddata ../fixtures/data.json
 ```
 7.Зпустите сервер
 ```bash
