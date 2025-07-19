@@ -9,15 +9,15 @@ class Men(models.Model):
     class Status(models.IntegerChoices):
         DRAFT = 0, 'Черновик'
         PUBLISHED = 1, 'Опубликована'
-    title = models.CharField(max_length = 255)
-    slug = models.SlugField(max_length = 255, unique = True, db_index=True)
-    content = models.TextField(blank=True)
-    time_created =models.DateTimeField(auto_now_add=True)
-    time_updated = models.DateTimeField(auto_now=True)
-    is_published = models.BooleanField(choices=Status.choices, default=Status.DRAFT)
-    cat = models.ForeignKey('Category', on_delete=models.PROTECT, related_name='posts')
-    tags = models.ManyToManyField('TagPost', blank=True, related_name='men')
-    wife = models.OneToOneField('Wife', on_delete=models.SET_NULL, null=True, blank=True, related_name='men')
+    title = models.CharField(max_length = 255, verbose_name='Заголовок')
+    slug = models.SlugField(max_length = 255, unique = True, db_index=True, verbose_name='Слаг')
+    content = models.TextField(blank=True, verbose_name='Текст статьи')
+    time_created =models.DateTimeField(auto_now_add=True, verbose_name='Время создания')
+    time_updated = models.DateTimeField(auto_now=True, verbose_name='Последнее обновления')
+    is_published = models.BooleanField(default=Status.DRAFT, verbose_name='Статус публткации')
+    cat = models.ForeignKey('Category', on_delete=models.PROTECT, related_name='posts', verbose_name='Категория')
+    tags = models.ManyToManyField('TagPost', blank=True, related_name='men', verbose_name='Тэги')
+    wife = models.OneToOneField('Wife', on_delete=models.SET_NULL, null=True, blank=True, related_name='men', verbose_name='Жена')
 
     objects = models.Manager()
     published = PublishedManager()
@@ -26,6 +26,8 @@ class Men(models.Model):
         return self.title
 
     class Meta:
+        verbose_name = 'Известные мужчины'
+        verbose_name_plural = 'Известные мужчины'
         ordering = ['-time_created']
         indexes = [
             models.Index(fields=['-time_created']),
@@ -36,9 +38,11 @@ class Men(models.Model):
 
 
 class Category(models.Model):
-    name = models.CharField(max_length = 100, db_index=True)
+    name = models.CharField(max_length = 100, db_index=True, verbose_name='Категория')
     slug = models.SlugField(max_length = 255, unique = True, db_index=True)
-
+    class Meta:
+        verbose_name = 'Категория'
+        verbose_name_plural = 'Категории'
     def __str__(self):
         return self.name
 

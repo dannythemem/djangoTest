@@ -28,3 +28,6 @@ urlpatterns = [
 ]
 
 handler404 = page_not_found
+
+admin.site.site_header = 'Панель Администрирования'
+admin.site.index_title = 'Известные мужчины мира'
