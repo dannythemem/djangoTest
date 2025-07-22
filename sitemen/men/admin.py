@@ -22,7 +22,11 @@ class MarriedFilter(admin.SimpleListFilter):
 
 @admin.register(Men)
 class MenAdmin(admin.ModelAdmin):
+    fields = ['title', 'content', 'slug', 'cat', 'wife', 'tags']
+    #exclude = ['tags', 'is_published']
+    readonly_fields = ['slug']
     list_display = ['title', 'time_created', 'is_published', 'cat', 'brief_info']
+    filter_horizontal = ['tags']
     list_display_links = ('title', )
     ordering = ('time_created', 'title')
     list_editable = ('is_published', )

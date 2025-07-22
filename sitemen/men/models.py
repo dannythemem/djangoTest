@@ -1,5 +1,7 @@
 from django.db import models
 from django.urls import reverse
+from django.template.defaultfilters import slugify
+from unidecode import unidecode
 
 class PublishedManager(models.Manager):
     def get_queryset(self):
@@ -35,6 +37,10 @@ class Men(models.Model):
 
     def get_absolute_url(self):
         return reverse('post', kwargs={'post_slug': self.slug})
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(unidecode(self.title))
+        super().save(*args, **kwargs)
 
 
 class Category(models.Model):
