@@ -2,7 +2,10 @@ from django.http import HttpResponse, HttpResponseNotFound, Http404
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.template.loader import render_to_string
-from men.models import Men, Category
+import uuid
+import os
+from men.forms import AddPostForm, UploadFileForm
+from men.models import Men, Category, UploadFiles
 
 menu = [
     {'title': "О сайте", 'url_name': 'about'},
@@ -25,9 +28,34 @@ def index(request): #ссылка на класс HttpRequest
     }
     return render(request, 'men/index.html', context=data)
 
+# def handle_uploaded_file(f):
+#     upload_dir = 'uploads'
+#     base_name, ext = os.path.splitext(f.name)
+#     new_name = f.name
+#     file_path = os.path.join(upload_dir, f.name)
+#
+#     if os.path.exists(file_path):
+#         new_name = f'{base_name}_{uuid.uuid4()}{ext}'
+#
+#     new_file_path = os.path.join(upload_dir, new_name)
+#
+#     with open(new_file_path, 'wb+') as destination:
+#         for chunk in f.chunks():
+#             destination.write(chunk)
+
+
 
 def about(request):
-    return render(request, 'men/about.html', {'title': 'О сайте', 'menu': menu})
+    if request.method == 'POST':
+        # handle_uploaded_file(request.FILES['file_upload'])
+        form = UploadFileForm(request.POST, request.FILES)
+        if form.is_valid():
+            # handle_uploaded_file(form.cleaned_data['file'])
+            fp = UploadFiles(file = form.cleaned_data['file'])
+            fp.save()
+    else:
+        form = UploadFileForm()
+    return render(request, 'men/about.html', {'title': 'О сайте', 'menu': menu, 'form': form})
 
 
 def show_post(request, post_slug):
@@ -44,7 +72,28 @@ def show_post(request, post_slug):
 
 
 def addpage(request):
-    return HttpResponse('Добавление статьи')
+    if request.method == 'POST':
+        form = AddPostForm(request.POST, request.FILES)
+
+        if form.is_valid():
+            #print(form.cleaned_data)
+            # try:
+            #     Men.objects.create(**form.cleaned_data)
+            #     return redirect('home')
+            # except:
+            #     form.add_error(None, 'Ошибка добавления поста')
+            form.save()
+            return redirect('home')
+    else:
+
+        form = AddPostForm()
+
+    data = {
+        'menu': menu,
+        'title': 'Добавление статьи',
+        'form': form
+    }
+    return render(request, 'men/addpage.html', data)
 
 
 def contact(request):

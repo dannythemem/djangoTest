@@ -1,3 +1,4 @@
+from django.core.validators import MinLengthValidator, MaxLengthValidator
 from django.db import models
 from django.urls import reverse
 from django.template.defaultfilters import slugify
@@ -12,7 +13,12 @@ class Men(models.Model):
         DRAFT = 0, 'Черновик'
         PUBLISHED = 1, 'Опубликована'
     title = models.CharField(max_length = 255, verbose_name='Заголовок')
-    slug = models.SlugField(max_length = 255, unique = True, db_index=True, verbose_name='Слаг')
+    slug = models.SlugField(max_length = 255, unique = True, db_index=True, verbose_name='Слаг',
+                           validators=[
+                               MinLengthValidator(5, message='Минимум 5 символов'),
+                               MaxLengthValidator(100, message='Минимум 100 символов'),
+                           ])
+    photo = models.ImageField(upload_to='photos/%Y/%m/%d/', default=None, blank=True, null=True, verbose_name='Фото')
     content = models.TextField(blank=True, verbose_name='Текст статьи')
     time_created =models.DateTimeField(auto_now_add=True, verbose_name='Время создания')
     time_updated = models.DateTimeField(auto_now=True, verbose_name='Последнее обновления')
@@ -39,7 +45,8 @@ class Men(models.Model):
         return reverse('post', kwargs={'post_slug': self.slug})
 
     def save(self, *args, **kwargs):
-        self.slug = slugify(unidecode(self.title))
+        if not self.slug and self.title:
+            self.slug = slugify(unidecode(self.title))
         super().save(*args, **kwargs)
 
 
@@ -70,4 +77,7 @@ class Wife(models.Model):
 
     def __str__(self):
         return self.name
+
+class UploadFiles(models.Model):
+    file = models.FileField(upload_to='uploads_model')
 # Create your models h  ere.

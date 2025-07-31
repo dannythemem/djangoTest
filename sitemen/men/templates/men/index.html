@@ -12,6 +12,9 @@
                 <p class="last">Дата: {{ p.time_created|date:"d-m-Y " }}</p>
             {% endif %}
         </div>
+        {% if p.photo %}
+            <p><img class="img-article-left thumb" src="{{ p.photo.url }}"></p>
+        {% endif %}
         <h2>{{p.title}}</h2>
         {% autoescape off %}
         {{p.content|linebreaks|truncatewords:40}}
