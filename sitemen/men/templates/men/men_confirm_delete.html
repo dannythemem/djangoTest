@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>{{ title }}</h1>
+
+{% if post.photo %}
+    <p><img class="img-article-left" src="{{ post.photo.url }}"></p>
+{% endif %}
+
+{{ post.content|linebreaks }}
+
+<form method="post">{% csrf_token %}
+    <p>Вы уверены, что хотите удалить "{{post}}"?</p>
+    <input type="submit" value="Confirm">
+</form>
+
+{% endblock %}
