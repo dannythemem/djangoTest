@@ -1,3 +1,5 @@
+from django.contrib.auth.decorators import login_required, permission_required
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.core.paginator import Paginator
 from django.http import HttpResponse, HttpResponseNotFound, Http404
 from django.shortcuts import render, redirect, get_object_or_404
@@ -11,6 +13,8 @@ from django.views.generic import TemplateView, ListView, DetailView, FormView, C
 from men.forms import AddPostForm, UploadFileForm
 from men.models import Men, Category, UploadFiles
 from men.utils import DataMixin
+
+
 
 # menu = [
 #     {'title': "О сайте", 'url_name': 'about'},
@@ -119,6 +123,7 @@ from men.utils import DataMixin
 #     }
 #     return render(request, 'men/index.html', context=data)
 
+@login_required
 def about(request):
     # if request.method == 'POST':
     #     # handle_uploaded_file(request.FILES['file_upload'])
@@ -179,18 +184,26 @@ class MenCategory(DataMixin, ListView):
         return  self.get_mixin_context(context, title = 'Категория - ' + cat.name, cat_selected = cat.pk)
 
 
-class AddPage(DataMixin, CreateView):
+
+class AddPage(PermissionRequiredMixin, DataMixin, CreateView):
     form_class = AddPostForm
     template_name = 'men/addpage.html'
     title_page = 'Добавление статьи'
+    permission_required = 'men.add_men'
+
+    def form_valid(self, form):
+        w = form.save(commit = False)
+        w.author = self.request.user
+        return super().form_valid(form)
 
 
-class UpdatePage(DataMixin, UpdateView):
+class UpdatePage(PermissionRequiredMixin, DataMixin, UpdateView):
     model = Men
     fields = ['title', 'content', 'photo', 'is_published', 'cat']
     template_name = 'men/addpage.html'
     success_url = reverse_lazy('home')
     title_page = 'Редактирование статьи'
+    permission_required = 'men.change_men'
 
 
 class DeletePage(DataMixin, DeleteView):
@@ -200,7 +213,7 @@ class DeletePage(DataMixin, DeleteView):
     context_object_name = 'post'
     title_page = 'Удаление статьи'
 
-
+@permission_required(perm='men.view_men', raise_exception=True)
 def contact(request):
     return HttpResponse('Обратная связь')
 

@@ -26,6 +26,7 @@ from sitemen import settings
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('men.urls')), #http://127.0.0.1:8000
+    path('users/', include('users.urls', namespace='users')),
     path('__debug__/', include('debug_toolbar.urls')),
 
 ]

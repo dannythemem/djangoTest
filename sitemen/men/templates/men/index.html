@@ -5,7 +5,9 @@
 	{% for p in posts %}
     <li>
         <div class="article-panel">
-            <p class="first">Категория: {{p.cat.name}}</p>
+            <p class="first">Категория: {{p.cat.name}} | автор:
+                {% if p.author %} {{ p.author.username }} {% else %} Неизвестен{% endif %}
+            </p>
             {% if p.time_update %}
                 <p class="last">Дата: {{p.time_update|date:"d-m-Y "}}</p>
             {% else %}

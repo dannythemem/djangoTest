@@ -6,7 +6,9 @@
 {% if post.photo %}
     <p><img class="img-article-left" src="{{ post.photo.url }}"></p>
 {% endif %}
-
+{% if perms.men.change_men %}
+    <p><a href="{%url 'edit_page' post.slug %}">Редактировать</a></p>
+{% endif %}
 {{ post.content|linebreaks }}
 
 {% endblock %}

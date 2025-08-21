@@ -1,9 +1,13 @@
 from django import template
 from django.db.models import Count
-
+from men.utils import menu
 import men.views as views
 from men.models import Category, TagPost
 register = template.Library()
+
+@register.simple_tag
+def get_menu():
+    return menu
 
 @register.simple_tag(name = 'get_cats')
 def get_categories():
