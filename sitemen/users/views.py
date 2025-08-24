@@ -1,14 +1,14 @@
 from django.conf import settings
 from django.contrib.auth import authenticate, login, logout, get_user_model
 from django.contrib.auth.forms import AuthenticationForm
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.contrib.auth.views import LoginView, PasswordChangeView
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse, reverse_lazy
 from django.views.generic import FormView, CreateView, UpdateView
 from .forms import LoginUserForm, RegisterUserForm, ProfileUserForm, UserPasswordChangeForm
-
+from django.core.exceptions import PermissionDenied
 
 # Create your views here.
 
@@ -43,3 +43,8 @@ class UserPasswordChange(LoginRequiredMixin, PasswordChangeView):
     form_class = UserPasswordChangeForm
     success_url = reverse_lazy('users:password_change_done')
     template_name = 'users/password_change_form.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.has_perm('users.social_auth'):
+            raise PermissionDenied('Отказано в доступе. Вы вошли через социальные сети, поэтому, вы не можете изменить пароль ')
+        return super().dispatch(request, *args, **kwargs)

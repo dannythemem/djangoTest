@@ -1,3 +1,5 @@
 sitemen/db.sqlite3
 __pycache__/
 *.pyc
+*.crt text eol=lf
+*.key text eol=lf
