@@ -45,18 +45,28 @@ INSTALLED_APPS = [
     'users',
     'debug_toolbar',
     'social_django',
+    'captcha',
+    'django.contrib.sitemaps',
+    'django.contrib.sites',
+
 ]
 
 MIDDLEWARE = [
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    # "django.middleware.cache.UpdateCacheMiddleware",
     'django.middleware.common.CommonMiddleware',
+    # "django.middleware.cache.FetchFromCacheMiddleware",
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
+
+# CACHE_MIDDLEWARE_ALIAS = 'default'
+# CACHE_MIDDLEWARE_SECONDS = 10
+# CACHE_MIDDLEWARE_KEY_PREFIX ='sitemen'
 
 ROOT_URLCONF = 'sitemen.urls'
 
@@ -86,8 +96,24 @@ WSGI_APPLICATION = 'sitemen.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'sitemen_db',
+        'USER': 'sitemen',
+        'PASSWORD': '1234',
+        'HOST': 'localhost',
+        'PORT': 5432,
+    }
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.sqlite3',
+    #     'NAME': BASE_DIR / 'db.sqlite3',
+    # }
+}
+
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.dummy.DummyCache",
+        # "BACKEND": "django.core.cache.backends.redis.RedisCache",
+        # "LOCATION": "redis://127.0.0.1:6379",
     }
 }
 
@@ -178,3 +204,5 @@ SOCIAL_AUTH_PIPELINE = (
     'social_core.pipeline.social_auth.load_extra_data',
     'social_core.pipeline.user.user_details',
 )
+
+SITE_ID = 1

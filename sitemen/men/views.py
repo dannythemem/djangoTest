@@ -6,11 +6,11 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse, reverse_lazy
 from django.template.loader import render_to_string
 import uuid, os
-
+from django.core.cache import cache
 from django.views import View
 from django.views.generic import TemplateView, ListView, DetailView, FormView, CreateView, UpdateView, DeleteView
 
-from men.forms import AddPostForm, UploadFileForm
+from men.forms import AddPostForm, UploadFileForm, ContactForm
 from men.models import Men, Category, UploadFiles
 from men.utils import DataMixin
 
@@ -152,7 +152,11 @@ class MenHome(DataMixin, ListView):
 
 
     def get_queryset(self):
-        return Men.published.all().select_related('cat')
+        m_lst = cache.get('men_posts')
+        if not m_lst:
+            m_lst = Men.published.all().select_related('cat')
+            cache.set('men_posts', m_lst, 60)
+        return m_lst
 
 
 class ShowPost(DataMixin, DetailView):
@@ -213,10 +217,15 @@ class DeletePage(DataMixin, DeleteView):
     context_object_name = 'post'
     title_page = 'Удаление статьи'
 
-@permission_required(perm='men.view_men', raise_exception=True)
-def contact(request):
-    return HttpResponse('Обратная связь')
+class ContactFormView(LoginRequiredMixin, DataMixin, FormView):
+    form_class = ContactForm
+    template_name = 'men/contact.html'
+    success_url = reverse_lazy('home')
+    title_page = 'Обратная связь'
 
+    def form_valid(self, form):
+        print(form.cleaned_data)
+        return super().form_valid(form)
 
 def login(request):
     return HttpResponse('Авторизация')

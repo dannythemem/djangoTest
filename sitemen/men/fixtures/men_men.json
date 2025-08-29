@@ -1,0 +1,133 @@
+[
+{
+  "model": "men.men",
+  "pk": 1,
+  "fields": {
+    "title": "Майк Тайсон",
+    "slug": "slug1",
+    "photo": "",
+    "content": "Биография Майка Тайсона",
+    "time_created": "2025-07-03T08:43:04.462Z",
+    "time_updated": "2025-07-10T18:37:17.285Z",
+    "is_published": true,
+    "cat": 1,
+    "wife": 1,
+    "author": null,
+    "tags": [
+      2,
+      3,
+      5
+    ]
+  }
+},
+{
+  "model": "men.men",
+  "pk": 2,
+  "fields": {
+    "title": "Бронни Джеймс",
+    "slug": "slug2",
+    "photo": "",
+    "content": "Биография Бронни Джеймса",
+    "time_created": "2025-07-03T08:49:05.318Z",
+    "time_updated": "2025-07-10T18:41:03.151Z",
+    "is_published": true,
+    "cat": 1,
+    "wife": 2,
+    "author": null,
+    "tags": [
+      2
+    ]
+  }
+},
+{
+  "model": "men.men",
+  "pk": 3,
+  "fields": {
+    "title": "Кайри Ирвинг",
+    "slug": "slug3",
+    "photo": "",
+    "content": "Биография Кайри Ирвинга",
+    "time_created": "2025-07-04T10:28:48.974Z",
+    "time_updated": "2025-07-04T14:41:22.077Z",
+    "is_published": true,
+    "cat": 1,
+    "wife": null,
+    "author": null,
+    "tags": []
+  }
+},
+{
+  "model": "men.men",
+  "pk": 4,
+  "fields": {
+    "title": "Стефан Кайри",
+    "slug": "slug4",
+    "photo": "",
+    "content": "Биография Стефана Кайри",
+    "time_created": "2025-07-04T10:31:00.118Z",
+    "time_updated": "2025-07-04T14:41:22.066Z",
+    "is_published": true,
+    "cat": 2,
+    "wife": null,
+    "author": null,
+    "tags": []
+  }
+},
+{
+  "model": "men.men",
+  "pk": 5,
+  "fields": {
+    "title": "Майкл Джексон",
+    "slug": "michael-jeckson",
+    "photo": "",
+    "content": "",
+    "time_created": "2025-07-10T15:52:35.176Z",
+    "time_updated": "2025-07-10T15:52:35.176Z",
+    "is_published": false,
+    "cat": 2,
+    "wife": null,
+    "author": null,
+    "tags": [
+      2
+    ]
+  }
+},
+{
+  "model": "men.men",
+  "pk": 8,
+  "fields": {
+    "title": "Макас",
+    "slug": "makas",
+    "photo": "photos/2025/07/31/makas.jpg",
+    "content": "Биография Макаса",
+    "time_created": "2025-07-31T15:37:45.247Z",
+    "time_updated": "2025-07-31T15:37:45.247Z",
+    "is_published": true,
+    "cat": 3,
+    "wife": null,
+    "author": null,
+    "tags": [
+      1,
+      4,
+      6
+    ]
+  }
+},
+{
+  "model": "men.men",
+  "pk": 12,
+  "fields": {
+    "title": "Гаро Иван",
+    "slug": "hara-ivan",
+    "photo": "",
+    "content": "Биография Гаро Иавна",
+    "time_created": "2025-08-12T18:03:50.018Z",
+    "time_updated": "2025-08-12T18:03:50.018Z",
+    "is_published": true,
+    "cat": 2,
+    "wife": 3,
+    "author": 1,
+    "tags": []
+  }
+}
+]

@@ -5,7 +5,7 @@ django.setup()
 from men.models import Men
 
 # Загружаем уже существующий data.json
-with open('../fixtures/data.json', encoding='utf-8') as f:
+with open('men/fixtures/data.json', encoding='utf-8') as f:
     existing_data = json.load(f)
 
 # Получаем новую запись как Python-объект
@@ -16,5 +16,5 @@ new_data = json.loads(new_data_raw)
 combined_data = existing_data + new_data
 
 # Перезаписываем data.json (один валидный массив)
-with open('../fixtures/data.json', 'w', encoding='utf-8') as f:
+with open('men/fixtures/data.json', 'w', encoding='utf-8') as f:
     json.dump(combined_data, f, indent=4, ensure_ascii=False)
